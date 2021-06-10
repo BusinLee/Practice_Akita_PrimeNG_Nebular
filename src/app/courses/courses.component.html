@@ -1,0 +1,91 @@
+<div class="courses">
+  <nb-layout>
+    <nb-layout-header><h1>Courses</h1></nb-layout-header>
+    <nb-layout-column>
+      <nb-card *ngIf="loadingData | async; else courses">
+        <nb-card-body class="p-p-0">
+          <nb-alert outline="basic" class="p-m-0">Loading data...</nb-alert>
+        </nb-card-body>
+      </nb-card>
+      
+      <ng-template #courses>
+        <div class="p-grid">
+          <div class="p-col-12 p-md-6 p-fluid">
+            <p-dropdown [options]="categories" optionLabel="label" [formControl]="sortControl" placeholder="Sort by" [showClear]="true"></p-dropdown>
+          </div>
+          <div class="p-col-12 p-md-6">
+            <button pButton type="button" class="p-button-outlined btn-add-dialog" (click)="openAddDialog(dialog)">Open dialog</button>
+          </div>
+        </div>
+        <div class="p-grid">
+          <div class="p-col-12 p-md-6 p-lg-3" *ngFor="let course of courseList | async">
+            <nb-card size="tiny" class='p-m-0'>
+              <!-- <nb-card-header>Tiny card</nb-card-header> -->
+              <nb-card-body>
+                <div class="p-d-flex p-jc-between header-course">
+                  <div class="display-inline">
+                    <div class="p-mr-2">
+                      <h4 class="p-mt-2">{{course.name}}</h4>
+                    </div>
+                    <div class="badges">
+                      <p-badge value="${{course.price}}" size="large" severity="info" styleClass="p-mr-2"></p-badge>
+                    </div>
+                  </div>
+                  <i class="pi pi-times p-mt-3" (click)="openRemoveConfirmDialog(confirmDialog, course.id)"></i>
+                </div>
+                <div class="p-d-flex p-jc-between p-mt-4">
+                  <button pButton type="button" class="p-button-outlined btn-add-dialog" (click)="openAddDialog(dialog, course)" label="Update" ></button>
+                  <div class="p-mt-2">
+                    <a class="details-label" [routerLink]="['/courses', course.id]">Details<i class="pi pi-angle-double-right"></i></a>
+                  </div>
+                </div>
+              </nb-card-body>
+            </nb-card>
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template #dialog let-data let-ref="dialogRef">
+        <nb-card>
+          <nb-card-header>Add course</nb-card-header>
+          <nb-card-body>
+            <form [formGroup]="addForm">
+              <!-- <input type="text" pInputText formControlName="name"/> -->
+              <span class="p-float-label p-mt-2">
+                <input id="float-input-name" class="w100" type="text" pInputText formControlName="name"> 
+                <label for="float-input-name">Name</label>
+              </span>
+              <span class="p-float-label p-mt-5">
+                <input id="float-input-price" class="w100" type="number" pInputText formControlName="price"> 
+                <label for="float-input-price">Price</label>
+              </span>
+              <span class="p-float-label p-mt-5">
+                <textarea id="float-input-desc" type="text" rows="5" cols="30" pInputText formControlName="desc"></textarea>
+                <label for="float-input-desc">Description</label>
+              </span>
+            </form>
+          </nb-card-body>
+          <nb-card-footer>
+            <button pButton type="button" class="p-mr-2" (click)="handleCourse();ref.close()">Add</button>
+            <button pButton type="button" class="p-button-outlined" (click)="ref.close()">Close</button>
+          </nb-card-footer>
+        </nb-card>
+      </ng-template>
+      <ng-template #confirmDialog let-data let-ref="dialogRef">
+        <nb-card>
+          <nb-card-header>Confirmation</nb-card-header>
+          <nb-card-body>
+            Do you want to delete this course?
+          </nb-card-body>
+          <nb-card-footer>
+            <button pButton type="button" class="p-mr-2" (click)="removeCourse();ref.close()">Add</button>
+            <button pButton type="button" class="p-button-outlined" (click)="ref.close()">Close</button>
+          </nb-card-footer>
+        </nb-card>
+      </ng-template>
+    </nb-layout-column>
+  </nb-layout>
+</div>
+    
+
+

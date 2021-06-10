@@ -1,0 +1,9 @@
+<div class="course">
+    <nb-layout *ngIf="course | async as course">
+      <nb-layout-header><h1>{{course.name}}</h1></nb-layout-header>
+      <nb-layout-column>
+        <div class="p-mb-3 description" [innerHTML]="course.description"></div>
+        <a class="back-label" [routerLink]="['/courses']"><i class="pi pi-angle-double-left"></i>List courses</a>
+      </nb-layout-column>
+    </nb-layout>
+</div>
